@@ -1,168 +1,133 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trade Calculator</title>
   <style>
   :root {
-    --primary: #007BFF;
+    --primary: #007bff;
     --primary-dark: #0056b3;
     --success: #28a745;
     --success-dark: #218838;
     --bg-light: #f8f9fa;
-    --text-light: #fff;
+    --bg-dark: #222;
+    --fg-light: #333;
+    --fg-dark: #eee;
+    --shadow: rgba(0,0,0,0.1) 0px 4px 8px;
     --border-radius: 6px;
+    --transition: 0.3s ease;
   }
 
-  * {
-    box-sizing: border-box;
+  html[data-theme="light"] {
+    --bg: var(--bg-light);
+    --fg: var(--fg-light);
   }
+  html[data-theme="dark"] {
+    --bg: var(--bg-dark);
+    --fg: var(--fg-dark);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
 
   body {
+    margin:0; padding:0;
     font-family: 'Segoe UI', Roboto, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f5f7fa;
-    color: #333;
+    background: var(--bg);
+    color: var(--fg);
+    transition: background var(--transition), color var(--transition);
   }
 
   header {
-    display: flex;
-    align-items: center;
-    background: #111;
-    color: var(--text-light);
-    padding: 12px 20px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display:flex; align-items:center;
+    background: var(--primary);
+    color: #fff; padding:12px 20px;
+    box-shadow: var(--shadow);
   }
+  header img { height:32px; margin-right:12px; }
+  header h1 { margin:0; font-size:20px; flex:1; }
 
-  header img {
-    height: 32px;
-    margin-right: 12px;
+  .theme-toggle {
+    padding: 6px 10px;
+    background: #fff; color: var(--primary);
+    border:none; border-radius:var(--border-radius);
+    cursor: pointer; transition: background var(--transition);
   }
-
-  header h1 {
-    font-size: 20px;
-    margin: 0;
-  }
+  .theme-toggle:hover { background: var(--bg-light); }
 
   main {
-    padding: 20px;
-    max-width: 900px;
-    margin: auto;
+    padding:20px; max-width:900px; margin:auto;
   }
 
-  .switch {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    margin-bottom: 20px;
-  }
-
-  .switch label {
-    display: flex;
-    align-items: center;
-    font-weight: 500;
-    gap: 8px;
-  }
+  .switch { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
+  .switch label { display:flex; align-items:center; gap:8px; font-weight:500; }
 
   .trade-row {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
+    display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;
+    background: var(--bg);
+    padding:8px; border-radius:var(--border-radius);
+    box-shadow: var(--shadow);
   }
-
   .trade-row input {
-    flex: 1 1 150px;
-    padding: 10px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: var(--border-radius);
-    transition: border-color 0.2s ease-in-out;
+    flex:1 1 150px; padding:10px; font-size:14px;
+    border:1px solid #ccc; border-radius:var(--border-radius);
+    transition:border-color var(--transition);
   }
-
-  .trade-row input:focus {
-    border-color: var(--primary);
-    outline: none;
-  }
-
+  .trade-row input:focus { border-color: var(--primary); outline:none; }
   .trade-row button {
-    padding: 10px 14px;
-    background: var(--primary);
-    color: var(--text-light);
-    border: none;
-    border-radius: var(--border-radius);
-    cursor: pointer;
-    transition: background 0.2s ease-in-out;
+    padding:10px 14px;
+    background: var(--primary); color:#fff; border:none;
+    border-radius:var(--border-radius); cursor:pointer;
+    transition: background var(--transition);
   }
+  .trade-row button:hover { background: var(--primary-dark); }
 
-  .trade-row button:hover {
-    background: var(--primary-dark);
-  }
-
-  button {
-    font-family: inherit;
-  }
+  button { font-family:inherit; }
 
   .results {
-    margin-top: 25px;
-    background: var(--bg-light);
-    padding: 15px;
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    margin-top:25px;
+    background: var(--bg);
+    padding:15px;
+    border-radius:var(--border-radius);
+    box-shadow: var(--shadow);
   }
-
-  .results div {
-    margin-bottom: 8px;
-  }
+  .results div { margin-bottom:8px; }
 
   .export-button {
-    margin-top: 20px;
-    padding: 10px 16px;
-    font-size: 14px;
+    margin-top:20px;
+    padding:10px 16px;
+    font-size:14px;
     background: var(--success);
-    color: var(--text-light);
-    border: none;
-    cursor: pointer;
-    border-radius: var(--border-radius);
-    transition: background 0.2s ease-in-out;
+    color: #fff;
+    border:none;
+    cursor:pointer;
+    border-radius:var(--border-radius);
+    transition: background var(--transition);
+  }
+  .export-button:hover { background: var(--success-dark); }
+
+  input#import {
+    margin-left:10px;
   }
 
-  .export-button:hover {
-    background: var(--success-dark);
+  @media(max-width:600px){
+    .trade-row input, .trade-row button { flex:1 1 100%; }
+    header { flex-direction:column; align-items:flex-start; }
+    header h1 { margin-top:10px; }
   }
-
-  @media (max-width: 600px) {
-    .trade-row input, .trade-row button {
-      flex: 1 1 100%;
-    }
-
-    header {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    header h1 {
-      margin-top: 10px;
-    }
-  }
-</style>
-
+  </style>
 </head>
 <body>
   <header>
     <img src="logo.png" alt="Logo">
     <h1>Trade Calculator</h1>
+    <button class="theme-toggle" id="theme-toggle">Enable Dark Mode</button>
   </header>
   <main>
     <div class="switch">
-      <label>
-        <input type="radio" name="mode" value="average" checked> Average Cost
-      </label>
-      <label>
-        <input type="radio" name="mode" value="profit"> Profit
-      </label>
+      <label><input type="radio" name="mode" value="average" checked> Average Cost</label>
+      <label><input type="radio" name="mode" value="profit"> Profit</label>
+      <input type="file" id="import" accept=".txt,.csv">
     </div>
     <div id="trade-list">
       <div class="trade-row">
@@ -173,17 +138,79 @@
       </div>
     </div>
     <button onclick="addRow()">Add Trade</button>
-    <div class="results">
-      <div id="average-price">Average Price: $0.00</div>
-      <div id="total-cost">Total Cost: $0.00</div>
-      <div id="profit" style="display: none;">Profit: $0.00</div>
-      <div id="percent-gain" style="display: none;">Percent Gain: 0.00%</div>
-    </div>
+    <div class="results"></div>
     <button class="export-button" onclick="exportData()">Export to Text</button>
-    <button id="excel" class="export-button" onclick="exportToExcel()">Export to Excel</button>
-
+    <button class="export-button" onclick="exportToExcel()">Export to Excel</button>
   </main>
-  <script>
+<script>
+      // Dark Mode
+  const themeToggle = document.getElementById('theme-toggle');
+  const current = localStorage.getItem('theme') || 'light';
+  document.documentElement.setAttribute('data-theme', current);
+  themeToggle.textContent = current==='light'? 'Enable Dark Mode' : 'Enable Light Mode';
+
+  themeToggle.onclick = () => {
+    const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+    themeToggle.textContent = theme==='dark'? 'Enable Light Mode':'Enable Dark Mode';
+  };
+
+  // Import
+  document.getElementById('import').addEventListener('change', evt => {
+  const file = evt.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = e => {
+    const text = e.target.result.trim();
+    const isCsv = file.name.toLowerCase().endsWith('.csv');
+
+    const lines = text.split(/\r?\n/).filter(line => line.trim());
+    if (lines.length < 2) return;
+
+    const headers = isCsv
+      ? lines.shift().split(/\s*,\s*/)
+      : lines.shift().trim().split(/\s{2,}/);
+
+    const profitCol = headers.some(h => h.toLowerCase().includes("profit") || h.toLowerCase().includes("percent"));
+    document.querySelector(`input[value="${profitCol ? 'profit' : 'average'}"]`).checked = true;
+    mode = profitCol ? "profit" : "average";
+    updateFields();
+
+    document.getElementById("trade-list").innerHTML = "";
+
+    lines.forEach(line => {
+      let parts;
+      if (isCsv) {
+        parts = line.split(/\s*,\s*/);
+      } else {
+        parts = line.trim().split(/\s{2,}/); // minimum 2 spaces
+      }
+
+      const [asset, quantity, cost, sell] = parts;
+
+      const row = document.createElement("div");
+      row.className = "trade-row";
+      row.innerHTML = `
+        <input type="text" placeholder="Asset Name" value="${asset || ''}" />
+        <input type="number" placeholder="Quantity" step="any" value="${parseFloat(quantity) || ''}" />
+        <input type="number" placeholder="Cost Per Asset ($)" step="any" value="${parseFloat(cost.replace('$', '')) || ''}" />
+        ${profitCol && sell ? `<input type="number" placeholder="Selling Price ($)" step="any" value="${parseFloat(sell.replace('$', '')) || ''}" />` : ""}
+        <button onclick="removeRow(this)">Remove</button>
+      `;
+      document.getElementById("trade-list").appendChild(row);
+    });
+
+    calculate();
+  };
+  reader.readAsText(file);
+  evt.target.value = ''; // reset file input
+});
+
+
+  
+  
     let mode = "average";
 
     document.querySelectorAll('input[name="mode"]').forEach(input => {
