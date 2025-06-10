@@ -150,14 +150,34 @@
     }
     .results {
       margin-top: 25px;
-      background: var(--bg);
-      padding: 15px;
+    }
+    .result-card {
+      background: var(--input-bg);
+      color: var(--input-fg);
       border-radius: var(--border-radius);
       box-shadow: var(--shadow);
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      transition: all var(--transition);
     }
-    .results div {
-      margin-bottom: 8px;
-      font-size: 16px;
+    .result-card h3 {
+      margin-top: 0;
+      font-size: 18px;
+      color: var(--primary);
+    }
+    .result-card p {
+      margin: 4px 0;
+    }
+    .result-grand {
+      background: var(--primary);
+      color: white;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+      padding: 18px 22px;
+      font-weight: 500;
+    }
+    .result-grand h3 {
+      margin: 0 0 8px 0;
     }
     @media (max-width: 600px) {
       header {
@@ -190,7 +210,6 @@
       <label><input type="radio" name="mode" value="profit"> Profit</label>
       <input type="file" id="import" accept=".txt,.csv">
     </div>
-
     <div id="trade-list">
       <div class="trade-row">
         <input type="text" placeholder="Asset Name">
@@ -199,12 +218,12 @@
         <button onclick="removeRow(this)">Remove</button>
       </div>
     </div>
-
     <button onclick="addRow()" style="margin-top:12px;font-size:16px;">Add Trade</button>
     <div class="results"></div>
     <button class="export-button" onclick="exportData()">Export to Text</button>
     <button class="export-button" onclick="exportToExcel()">Export to Excel</button>
   </main>
+
 
   <script>
     let mode = "average";
@@ -336,34 +355,45 @@
         if (mode==='profit') grandRev+=qty*sp;
       });
 
-      const out = document.querySelector('.results');
-      out.innerHTML='';
-      for (let [a,{qty,cost,rev}] of Object.entries(assets)) {
-        const avg=cost/qty||0, prof=rev-cost, pct=prof/cost*100||0;
-        const val = mode==='profit'?rev:cost;
+ const out = document.querySelector('.results');
+out.innerHTML = '';
+
+for (let [a, { qty, cost, rev }] of Object.entries(assets)) {
+  const avg = cost / qty || 0,
+        prof = rev - cost,
+        pct = prof / cost * 100 || 0,
+        val = mode === 'profit' ? rev : cost;
+
   out.innerHTML += `
-  <div><strong>${a}</strong></div>
-  <div>Quantity: ${qty.toFixed(6)}</div>
-  <div>Value: $${val.toFixed(2)}</div>
-  <div>Average Price: $${avg.toFixed(4)}</div>
-  <div>Total Cost: $${cost.toFixed(2)}</div>
-  ${ mode==='profit'
-     ? `<div>Profit: $${prof.toFixed(2)}</div><div>Percent Gain: ${pct.toFixed(2)}%</div>`
-     : ''
-  }
+    <div class="result-card">
+      <h3>${a}</h3>
+      <p>Quantity: ${qty.toFixed(6)}</p>
+      <p>Value: $${val.toFixed(2)}</p>
+      <p>Average Price: $${avg.toFixed(4)}</p>
+      <p>Total Cost: $${cost.toFixed(2)}</p>
+      ${mode === 'profit' ? `
+        <p>Profit: $${prof.toFixed(2)}</p>
+        <p>Percent Gain: ${pct.toFixed(2)}%</p>
+      ` : ''}
+    </div>
+  `;
+}
+
+const gp = grandRev - grandCost,
+      gpct = gp / grandCost * 100 || 0;
+
+out.innerHTML += `
+  <div class="result-grand">
+    <h3>Grand Total</h3>
+    <p>Total Quantity: ${grandQty.toFixed(6)}</p>
+    <p>Total Cost: $${grandCost.toFixed(2)}</p>
+    ${mode === 'profit' ? `
+      <p>Profit: $${gp.toFixed(2)}</p>
+      <p>Percent Gain: ${gpct.toFixed(2)}%</p>
+    ` : ''}
+  </div>
 `;
 
-      }
-
-      const gp=grandRev-grandCost, gpct=gp/grandCost*100||0;
-      out.innerHTML += `
-        <div><strong>Grand Total</strong></div>
-        <div>Total Cost: $${grandCost.toFixed(2)}</div>
-        ${mode==='profit'
-          ? `<div>Profit: $${gp.toFixed(2)}</div><div>Percent Gain: ${gpct.toFixed(2)}%</div>`
-          : ''
-        }
-      `;
 
       return { assets, grandQty, grandCost, grandRev, prof:gp, pct:gpct };
     }
