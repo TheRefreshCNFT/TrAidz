@@ -5,116 +5,188 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trade Calculator</title>
   <style>
-  :root {
-    --primary: #007bff;
-    --primary-dark: #0056b3;
-    --success: #28a745;
-    --success-dark: #218838;
-    --bg-light: #f8f9fa;
-    --bg-dark: #222;
-    --fg-light: #333;
-    --fg-dark: #eee;
-    --shadow: rgba(0,0,0,0.1) 0px 4px 8px;
-    --border-radius: 6px;
-    --transition: 0.3s ease;
-  }
+ :root {
+  --primary: #007bff;
+  --primary-dark: #0056b3;
+  --success: #28a745;
+  --success-dark: #218838;
+  --border-radius: 6px;
+  --transition: 0.3s ease;
+}
 
-  html[data-theme="light"] {
-    --bg: var(--bg-light);
-    --fg: var(--fg-light);
-  }
-  html[data-theme="dark"] {
-    --bg: var(--bg-dark);
-    --fg: var(--fg-dark);
-  }
+/* Light Mode Theme */
+html[data-theme="light"] {
+  --bg: #f8f9fa;
+  --fg: #212529;
+  --input-bg: #fff;
+  --input-fg: #212529;
+  --shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
+}
 
-  *, *::before, *::after { box-sizing: border-box; }
+/* Dark Mode Theme */
+html[data-theme="dark"] {
+  --bg: #121212;
+  --fg: #f1f1f1;
+  --input-bg: #1e1e1e;
+  --input-fg: #f8f8f8;
+  --shadow: rgba(255, 255, 255, 0.05) 0px 4px 12px;
+}
 
-  body {
-    margin:0; padding:0;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--fg);
-    transition: background var(--transition), color var(--transition);
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  transition: background var(--transition), color var(--transition);
+}
+
+header {
+  display: flex;
+  align-items: center;
+  background: var(--primary);
+  color: #fff;
+  padding: 12px 20px;
+  box-shadow: var(--shadow);
+}
+header img {
+  height: 32px;
+  margin-right: 12px;
+}
+header h1 {
+  margin: 0;
+  font-size: 20px;
+  flex: 1;
+}
+
+.theme-toggle {
+  padding: 6px 10px;
+  background: var(--input-bg);
+  color: var(--primary);
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.theme-toggle:hover {
+  opacity: 0.85;
+}
+
+main {
+  padding: 20px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.switch {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.switch label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.trade-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  background: var(--bg);
+  padding: 8px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+.trade-row input {
+  flex: 1 1 150px;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #555;
+  background: var(--input-bg);
+  color: var(--input-fg);
+  border-radius: var(--border-radius);
+  transition: border-color var(--transition), background var(--transition), color var(--transition);
+}
+.trade-row input:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+.trade-row button {
+  padding: 10px 14px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  transition: background var(--transition);
+}
+.trade-row button:hover {
+  background: var(--primary-dark);
+}
+
+button {
+  font-family: inherit;
+}
+
+.results {
+  margin-top: 25px;
+  background: var(--bg);
+  padding: 15px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+}
+.results div {
+  margin-bottom: 8px;
+}
+
+.export-button {
+  margin-top: 20px;
+  padding: 10px 16px;
+  font-size: 14px;
+  background: var(--success);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  transition: background var(--transition);
+}
+.export-button:hover {
+  background: var(--success-dark);
+}
+
+input#import {
+  margin-left: 10px;
+  background: var(--input-bg);
+  color: var(--input-fg);
+  border: 1px solid #444;
+  padding: 6px;
+  border-radius: var(--border-radius);
+}
+
+@media (max-width: 600px) {
+  .trade-row input,
+  .trade-row button {
+    flex: 1 1 100%;
   }
 
   header {
-    display:flex; align-items:center;
-    background: var(--primary);
-    color: #fff; padding:12px 20px;
-    box-shadow: var(--shadow);
-  }
-  header img { height:32px; margin-right:12px; }
-  header h1 { margin:0; font-size:20px; flex:1; }
-
-  .theme-toggle {
-    padding: 6px 10px;
-    background: #fff; color: var(--primary);
-    border:none; border-radius:var(--border-radius);
-    cursor: pointer; transition: background var(--transition);
-  }
-  .theme-toggle:hover { background: var(--bg-light); }
-
-  main {
-    padding:20px; max-width:900px; margin:auto;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .switch { display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px; }
-  .switch label { display:flex; align-items:center; gap:8px; font-weight:500; }
+  header h1 {
+    margin-top: 10px;
+  }
+}
 
-  .trade-row {
-    display:flex; gap:10px; flex-wrap:wrap; margin-bottom:12px;
-    background: var(--bg);
-    padding:8px; border-radius:var(--border-radius);
-    box-shadow: var(--shadow);
-  }
-  .trade-row input {
-    flex:1 1 150px; padding:10px; font-size:14px;
-    border:1px solid #ccc; border-radius:var(--border-radius);
-    transition:border-color var(--transition);
-  }
-  .trade-row input:focus { border-color: var(--primary); outline:none; }
-  .trade-row button {
-    padding:10px 14px;
-    background: var(--primary); color:#fff; border:none;
-    border-radius:var(--border-radius); cursor:pointer;
-    transition: background var(--transition);
-  }
-  .trade-row button:hover { background: var(--primary-dark); }
-
-  button { font-family:inherit; }
-
-  .results {
-    margin-top:25px;
-    background: var(--bg);
-    padding:15px;
-    border-radius:var(--border-radius);
-    box-shadow: var(--shadow);
-  }
-  .results div { margin-bottom:8px; }
-
-  .export-button {
-    margin-top:20px;
-    padding:10px 16px;
-    font-size:14px;
-    background: var(--success);
-    color: #fff;
-    border:none;
-    cursor:pointer;
-    border-radius:var(--border-radius);
-    transition: background var(--transition);
-  }
-  .export-button:hover { background: var(--success-dark); }
-
-  input#import {
-    margin-left:10px;
-  }
-
-  @media(max-width:600px){
-    .trade-row input, .trade-row button { flex:1 1 100%; }
-    header { flex-direction:column; align-items:flex-start; }
-    header h1 { margin-top:10px; }
-  }
   </style>
 </head>
 <body>
