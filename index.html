@@ -1,199 +1,188 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TrAidz</title>
   <style>
- :root {
-  --primary: #007bff;
-  --primary-dark: #0056b3;
-  --success: #28a745;
-  --success-dark: #218838;
-  --border-radius: 6px;
-  --transition: 0.3s ease;
-}
-
-/* Light Mode Theme */
-html[data-theme="light"] {
-  --bg: #f8f9fa;
-  --fg: #212529;
-  --input-bg: #fff;
-  --input-fg: #212529;
-  --shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
-}
-
-/* Dark Mode Theme */
-html[data-theme="dark"] {
-  --bg: #121212;
-  --fg: #f1f1f1;
-  --input-bg: #1e1e1e;
-  --input-fg: #f8f8f8;
-  --shadow: rgba(255, 255, 255, 0.05) 0px 4px 12px;
-}
-
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--fg);
-  transition: background var(--transition), color var(--transition);
-}
-
-header {
-  display: flex;
-  align-items: center;
-  background: var(--primary);
-  color: #fff;
-  padding: 12px 20px;
-  box-shadow: var(--shadow);
-}
-header img {
-  height: 32px;
-  margin-right: 12px;
-}
-header h1 {
-  margin: 0;
-  font-size: 20px;
-  flex: 1;
-}
-
-.theme-toggle {
-  padding: 6px 10px;
-  background: var(--input-bg);
-  color: var(--primary);
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background var(--transition);
-}
-.theme-toggle:hover {
-  opacity: 0.85;
-}
-
-main {
-  padding: 20px;
-  max-width: 900px;
-  margin: auto;
-}
-
-.switch {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-  margin-bottom: 20px;
-}
-.switch label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-weight: 500;
-}
-
-.trade-row {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-  background: var(--bg);
-  padding: 8px;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-}
-.trade-row input {
-  flex: 1 1 150px;
-  padding: 10px;
-  font-size: 14px;
-  border: 1px solid #555;
-  background: var(--input-bg);
-  color: var(--input-fg);
-  border-radius: var(--border-radius);
-  transition: border-color var(--transition), background var(--transition), color var(--transition);
-}
-.trade-row input:focus {
-  border-color: var(--primary);
-  outline: none;
-}
-.trade-row button {
-  padding: 10px 14px;
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  border-radius: var(--border-radius);
-  cursor: pointer;
-  transition: background var(--transition);
-}
-.trade-row button:hover {
-  background: var(--primary-dark);
-}
-
-button {
-  font-family: inherit;
-}
-
-.results {
-  margin-top: 25px;
-  background: var(--bg);
-  padding: 15px;
-  border-radius: var(--border-radius);
-  box-shadow: var(--shadow);
-}
-.results div {
-  margin-bottom: 8px;
-}
-
-.export-button {
-  margin-top: 20px;
-  padding: 10px 16px;
-  font-size: 14px;
-  background: var(--success);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  border-radius: var(--border-radius);
-  transition: background var(--transition);
-}
-.export-button:hover {
-  background: var(--success-dark);
-}
-
-input#import {
-  margin-left: 10px;
-  background: var(--input-bg);
-  color: var(--input-fg);
-  border: 1px solid #444;
-  padding: 6px;
-  border-radius: var(--border-radius);
-}
-
-@media (max-width: 600px) {
-  .trade-row input,
-  .trade-row button {
-    flex: 1 1 100%;
-  }
-
-  header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  header h1 {
-    margin-top: 10px;
-  }
-}
-
+    :root {
+      --primary: #007bff;
+      --primary-dark: #0056b3;
+      --success: #28a745;
+      --success-dark: #218838;
+      --bg: #f8f9fa;
+      --fg: #212529;
+      --input-bg: #fff;
+      --input-fg: #212529;
+      --shadow: rgba(0, 0, 0, 0.1) 0px 4px 8px;
+      --border-radius: 6px;
+      --transition: 0.3s ease;
+    }
+    html[data-theme="dark"] {
+      --bg: #121212;
+      --fg: #f1f1f1;
+      --input-bg: #1e1e1e;
+      --input-fg: #f8f8f8;
+      --shadow: rgba(255, 255, 255, 0.05) 0px 4px 12px;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.5;
+      background: var(--bg);
+      color: var(--fg);
+      transition: background var(--transition), color var(--transition);
+    }
+    header {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 20px;
+      box-shadow: var(--shadow);
+    }
+    header img {
+      height: 32px;
+      margin-right: 12px;
+    }
+    header h1 {
+      font-size: 20px;
+      margin: 0;
+      flex: 1;
+    }
+    .theme-toggle {
+      font-size: 16px;
+      padding: 6px 10px;
+      background: var(--input-bg);
+      color: var(--primary);
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background var(--transition);
+      width: auto;
+    }
+    .theme-toggle:hover {
+      opacity: 0.85;
+    }
+    main {
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+    }
+    .switch {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+    .switch label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 16px;
+      font-weight: 500;
+    }
+    #import {
+      font-size: 16px;
+    }
+    .trade-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+      background: var(--bg);
+      padding: 8px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+    .trade-row input,
+    .trade-row button {
+      font-size: 16px;
+    }
+    .trade-row input {
+      flex: 1 1 150px;
+      padding: 10px;
+      border: 1px solid #555;
+      background: var(--input-bg);
+      color: var(--input-fg);
+      border-radius: var(--border-radius);
+      transition: border-color var(--transition);
+    }
+    .trade-row input:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+    .trade-row button {
+      padding: 10px 14px;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .trade-row button:hover {
+      background: var(--primary-dark);
+    }
+    button {
+      font-family: inherit;
+    }
+    .export-button {
+      margin-top: 20px;
+      padding: 10px 16px;
+      font-size: 16px;
+      background: var(--success);
+      color: #fff;
+      border: none;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: background var(--transition);
+      width: auto;
+    }
+    .export-button:hover {
+      background: var(--success-dark);
+    }
+    .results {
+      margin-top: 25px;
+      background: var(--bg);
+      padding: 15px;
+      border-radius: var(--border-radius);
+      box-shadow: var(--shadow);
+    }
+    .results div {
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      header h1 {
+        margin-top: 10px;
+        font-size:42px;
+      }
+      .switch label,
+      .export-button,
+      .theme-toggle,
+      .trade-row input,
+      .trade-row button {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Logo">
-    <h1>Trade Calculator</h1>
-    <button class="theme-toggle" id="theme-toggle">Enable Dark Mode</button>
+    <img src="logo.png" alt="Logo" />
+    <h1>TrAidz</h1>
+    <button id="theme-toggle" class="theme-toggle">Dark Mode</button>
   </header>
   <main>
     <div class="switch">
@@ -201,6 +190,7 @@ input#import {
       <label><input type="radio" name="mode" value="profit"> Profit</label>
       <input type="file" id="import" accept=".txt,.csv">
     </div>
+
     <div id="trade-list">
       <div class="trade-row">
         <input type="text" placeholder="Asset Name">
@@ -209,327 +199,246 @@ input#import {
         <button onclick="removeRow(this)">Remove</button>
       </div>
     </div>
-    <button onclick="addRow()">Add Trade</button>
+
+    <button onclick="addRow()" style="margin-top:12px;font-size:16px;">Add Trade</button>
     <div class="results"></div>
     <button class="export-button" onclick="exportData()">Export to Text</button>
     <button class="export-button" onclick="exportToExcel()">Export to Excel</button>
   </main>
-<script>
-      // Dark Mode
-  const themeToggle = document.getElementById('theme-toggle');
-  const current = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', current);
-  themeToggle.textContent = current==='light'? 'Enable Dark Mode' : 'Enable Light Mode';
 
-  themeToggle.onclick = () => {
-    const theme = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-    themeToggle.textContent = theme==='dark'? 'Enable Light Mode':'Enable Dark Mode';
-  };
-
-  // Import
-  document.getElementById('import').addEventListener('change', evt => {
-  const file = evt.target.files[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = e => {
-    const text = e.target.result.trim();
-    const isCsv = file.name.toLowerCase().endsWith('.csv');
-
-    const lines = text.split(/\r?\n/).filter(line => line.trim());
-    if (lines.length < 2) return;
-
-    const headers = isCsv
-      ? lines.shift().split(/\s*,\s*/)
-      : lines.shift().trim().split(/\s{2,}/);
-
-    const profitCol = headers.some(h => h.toLowerCase().includes("profit") || h.toLowerCase().includes("percent"));
-    document.querySelector(`input[value="${profitCol ? 'profit' : 'average'}"]`).checked = true;
-    mode = profitCol ? "profit" : "average";
-    updateFields();
-
-    document.getElementById("trade-list").innerHTML = "";
-
-    lines.forEach(line => {
-      let parts;
-      if (isCsv) {
-        parts = line.split(/\s*,\s*/);
-      } else {
-        parts = line.trim().split(/\s{2,}/); // minimum 2 spaces
-      }
-
-      const [asset, quantity, cost, sell] = parts;
-
-      const row = document.createElement("div");
-      row.className = "trade-row";
-      row.innerHTML = `
-        <input type="text" placeholder="Asset Name" value="${asset || ''}" />
-        <input type="number" placeholder="Quantity" step="any" value="${parseFloat(quantity) || ''}" />
-        <input type="number" placeholder="Cost Per Asset ($)" step="any" value="${parseFloat(cost.replace('$', '')) || ''}" />
-        ${profitCol && sell ? `<input type="number" placeholder="Selling Price ($)" step="any" value="${parseFloat(sell.replace('$', '')) || ''}" />` : ""}
-        <button onclick="removeRow(this)">Remove</button>
-      `;
-      document.getElementById("trade-list").appendChild(row);
-    });
-
-    calculate();
-  };
-  reader.readAsText(file);
-  evt.target.value = ''; // reset file input
-});
-
-
-  
-  
+  <script>
     let mode = "average";
 
-    document.querySelectorAll('input[name="mode"]').forEach(input => {
-      input.addEventListener("change", () => {
-        mode = input.value;
+    // Dark/Light toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+    themeToggle.textContent = saved === 'light' ? 'Dark Mode' : 'Light Mode';
+
+    themeToggle.onclick = () => {
+      const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+      localStorage.setItem('theme', t);
+      themeToggle.textContent = t === 'dark' ? 'Light Mode' : 'Dark Mode';
+    };
+
+    // Import handling
+    document.getElementById('import').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const fr = new FileReader();
+      fr.onload = ev => {
+        const txt = ev.target.result.trim(), isCsv = file.name.toLowerCase().endsWith('.csv');
+        const lines = txt.split(/\r?\n/).filter(l => l.trim() && !l.toLowerCase().startsWith('grand total'));
+        if (lines.length < 2) return;
+
+        const headers = isCsv ? lines.shift().split(/\s*,\s*/) : lines.shift().trim().split(/\s{2,}/);
+        const profitCol = headers.some(h => /profit|percent/i.test(h));
+
+        document.querySelector(`input[value="${profitCol ? 'profit' : 'average'}"]`).checked = true;
+        mode = profitCol ? 'profit' : 'average';
         updateFields();
+
+        const tl = document.getElementById('trade-list');
+        tl.innerHTML = '';
+        lines.forEach(line => {
+          const parts = isCsv ? line.split(/\s*,\s*/) : line.trim().split(/\s{2,}/);
+          const [asset, qty, cost, sell] = parts;
+          if (!asset) return;
+
+          const div = document.createElement('div');
+          div.className = 'trade-row';
+          div.innerHTML = `
+            <input type="text" placeholder="Asset Name" value="${asset}" />
+            <input type="number" placeholder="Quantity" step="any" value="${parseFloat(qty)||''}" />
+            <input type="number" placeholder="Cost Per Asset ($)" step="any" value="${parseFloat(cost.replace('$',''))||''}" />
+            ${profitCol && sell ? `<input type="number" placeholder="Selling Price ($)" step="any" value="${parseFloat(sell.replace('$',''))||''}" />` : ''}
+            <button onclick="removeRow(this)">Remove</button>
+          `;
+          tl.appendChild(div);
+        });
         calculate();
-      });
+      };
+      fr.readAsText(file);
+      e.target.value = '';
     });
 
+    document.querySelectorAll('input[name="mode"]').forEach(el =>
+      el.addEventListener('change', () => {
+        mode = el.value;
+        updateFields();
+        calculate();
+      })
+    );
+
     function addRow() {
-      const tradeList = document.getElementById("trade-list");
-      const row = document.createElement("div");
-      row.className = "trade-row";
-      row.innerHTML = `
+      const div = document.createElement('div');
+      div.className = 'trade-row';
+      div.innerHTML = `
         <input type="text" placeholder="Asset Name">
         <input type="number" placeholder="Quantity" step="any">
         <input type="number" placeholder="Cost Per Asset ($)" step="any">
-        ${mode === "profit" ? '<input type="number" placeholder="Selling Price ($)" step="any">' : ''}
+        ${mode==='profit'?'<input type="number" placeholder="Selling Price ($)" step="any">':''}
         <button onclick="removeRow(this)">Remove</button>
       `;
-      tradeList.appendChild(row);
+      document.getElementById('trade-list').appendChild(div);
     }
 
-    function removeRow(button) {
-      button.parentElement.remove();
+    function removeRow(btn) {
+      btn.parentElement.remove();
       calculate();
     }
 
     function updateFields() {
-      const rows = document.querySelectorAll(".trade-row");
-      rows.forEach(row => {
-        const sellPriceField = row.querySelector('input[placeholder="Selling Price ($)"]');
-        if (mode === "profit" && !sellPriceField) {
-          const input = document.createElement("input");
-          input.type = "number";
-          input.placeholder = "Selling Price ($)";
-          input.step = "any";
-          row.insertBefore(input, row.lastElementChild);
-        } else if (mode === "average" && sellPriceField) {
-          sellPriceField.remove();
+      document.querySelectorAll('.trade-row').forEach(row => {
+        const sp = row.querySelector('input[placeholder="Selling Price ($)"]');
+        if (mode === 'profit' && !sp) {
+          const i = document.createElement('input');
+          i.placeholder = 'Selling Price ($)';
+          i.type = 'number';
+          i.step = 'any';
+          row.insertBefore(i, row.lastElementChild);
+        } else if (mode === 'average' && sp) {
+          sp.remove();
         }
       });
     }
 
     function calculate() {
-      const rows = document.querySelectorAll(".trade-row");
+      const rows = document.querySelectorAll('.trade-row');
       const assets = {};
-      let grandTotalQuantity = 0;
-      let grandTotalCost = 0;
-      let grandTotalRevenue = 0;
+      let grandQty=0, grandCost=0, grandRev=0, lastAsset='', spMap={};
 
-      let lastAsset = "";
-      const sellPrices = {}; // Store the last sell price for each asset
+      rows.forEach(r => {
+        let a = r.children[0].value.trim();
+        const qty = parseFloat(r.children[1].value)||0;
+        const c = parseFloat(r.children[2].value)||0;
+        let sp = mode==='profit'?parseFloat(r.children[3]?.value)||0:0;
 
-      rows.forEach((row, index) => {
-        let asset = row.children[0].value.trim();
-        const quantity = parseFloat(row.children[1].value) || 0;
-        const costPerAsset = parseFloat(row.children[2].value) || 0;
-        let sellPrice = mode === "profit" ? parseFloat(row.children[3]?.value || 0) : 0;
+        if (!a && lastAsset) {
+          a = lastAsset;
+          r.children[0].placeholder=lastAsset;
+        } else if (a) lastAsset=a;
 
-        // Use the last asset if none is entered
-        if (!asset && lastAsset) {
-          asset = lastAsset;
-          row.children[0].placeholder = asset; // Display shadow value
-        } else if (asset) {
-          lastAsset = asset; // Update last asset
+        if (mode==='profit') {
+          if (sp) spMap[a]=sp;
+          else if (spMap[a]) sp=spMap[a];
         }
 
-        // Apply the smart sell price logic
-        if (mode === "profit") {
-          if (sellPrice) {
-            sellPrices[asset] = sellPrice; // Update the chain for this asset
-          } else if (sellPrices[asset]) {
-            sellPrice = sellPrices[asset]; // Use the last known sell price for this asset
-          }
-        }
+        if (!assets[a]) assets[a]={ qty:0, cost:0, rev:0 };
+        assets[a].qty += qty;
+        assets[a].cost += qty*c;
+        if (mode==='profit') assets[a].rev += qty*sp;
 
-        // Initialize asset group if not already
-        if (!assets[asset]) {
-          assets[asset] = { quantity: 0, totalCost: 0, totalRevenue: 0 };
-        }
-
-        // Update asset group totals
-        assets[asset].quantity += quantity;
-        assets[asset].totalCost += quantity * costPerAsset;
-        if (mode === "profit") {
-          assets[asset].totalRevenue += quantity * sellPrice;
-        }
-
-        // Update grand totals
-        grandTotalQuantity += quantity;
-        grandTotalCost += quantity * costPerAsset;
-        if (mode === "profit") {
-          grandTotalRevenue += quantity * sellPrice;
-        }
+        grandQty+=qty;
+        grandCost+=qty*c;
+        if (mode==='profit') grandRev+=qty*sp;
       });
 
-      const resultsDiv = document.querySelector(".results");
-      resultsDiv.innerHTML = ""; // Clear previous results
-
-      // Display results for each asset
-      for (const [asset, data] of Object.entries(assets)) {
-        const averagePrice = data.totalCost / data.quantity || 0;
-        const profit = data.totalRevenue - data.totalCost || 0;
-        const percentGain = (profit / data.totalCost) * 100 || 0;
-
-        const value = mode === "profit"
-  ? data.totalRevenue
-  : data.totalCost;
-
-resultsDiv.innerHTML += `
-  <div><strong>${asset}</strong></div>
-  <div>Value: $${value.toFixed(2)}</div>
-  <div>Average Price: $${averagePrice.toFixed(4)}</div>
-  <div>Total Cost: $${data.totalCost.toFixed(2)}</div>
-  ${mode === "profit" ? `
-    <div>Profit: $${profit.toFixed(2)}</div>
-    <div>Percent Gain: ${percentGain.toFixed(2)}%</div>
-  ` : ""}
-`;
-
+      const out = document.querySelector('.results');
+      out.innerHTML='';
+      for (let [a,{qty,cost,rev}] of Object.entries(assets)) {
+        const avg=cost/qty||0, prof=rev-cost, pct=prof/cost*100||0;
+        const val = mode==='profit'?rev:cost;
+        out.innerHTML += `
+          <div><strong>${a}</strong></div>
+          <div>Value: $${val.toFixed(2)}</div>
+          <div>Average Price: $${avg.toFixed(4)}</div>
+          <div>Total Cost: $${cost.toFixed(2)}</div>
+          ${ mode==='profit'
+             ? `<div>Profit: $${prof.toFixed(2)}</div><div>Percent Gain: ${pct.toFixed(2)}%</div>`
+             : ''
+          }
+        `;
       }
 
-      // Display grand totals
-      const grandAveragePrice = grandTotalCost / grandTotalQuantity || 0;
-      const grandProfit = grandTotalRevenue - grandTotalCost || 0;
-      const grandPercentGain = (grandProfit / grandTotalCost) * 100 || 0;
-
-      resultsDiv.innerHTML += `
+      const gp=grandRev-grandCost, gpct=gp/grandCost*100||0;
+      out.innerHTML += `
         <div><strong>Grand Total</strong></div>
-        <div>Average Price: $${grandAveragePrice.toFixed(4)}</div>
-        <div>Total Cost: $${grandTotalCost.toFixed(2)}</div>
-        ${mode === "profit" ? `
-          <div>Profit: $${grandProfit.toFixed(2)}</div>
-          <div>Percent Gain: ${grandPercentGain.toFixed(2)}%</div>
-        ` : ""}
+        <div>Total Cost: $${grandCost.toFixed(2)}</div>
+        ${mode==='profit'
+          ? `<div>Profit: $${gp.toFixed(2)}</div><div>Percent Gain: ${gpct.toFixed(2)}%</div>`
+          : ''
+        }
       `;
 
-      return { assets, grandTotalQuantity, grandTotalCost, grandTotalRevenue, grandProfit, grandPercentGain };
+      return { assets, grandQty, grandCost, grandRev, prof:gp, pct:gpct };
     }
 
-    function exportToExcel() {
-      const { assets, grandTotalQuantity, grandTotalCost, grandTotalRevenue, grandProfit, grandPercentGain } = calculate();
+function exportData() {
+  const { assets, grandQty, grandCost, grandRev, prof, pct } = calculate();
 
-      let rows = [["Asset Name", "Quantity", "Cost Per Asset"]]; // Header row
-      if (mode === "profit") {
-        rows[0].push("Selling Price", "Profit", "Percent Gain");
-      }
+  const pad = (str, len) => str.toString().padEnd(len, ' ');
+  const rows = [];
 
-      // Add rows for each asset
-      for (const [asset, data] of Object.entries(assets)) {
-        const averagePrice = data.totalCost / data.quantity || 0;
-        const profit = data.totalRevenue - data.totalCost || 0;
-        const percentGain = (profit / data.totalCost) * 100 || 0;
+  const headers = [
+    pad("Asset Name", 14),
+    pad("Quantity", 12),
+    pad("Cost Per Asset", 20)
+  ];
 
-        let row = [asset, data.quantity.toFixed(6), `$${(data.totalCost / data.quantity).toFixed(4)}`];
-        if (mode === "profit") {
-          row.push(`$${(data.totalRevenue / data.quantity).toFixed(4)}`, `$${profit.toFixed(2)}`, `${percentGain.toFixed(2)}%`);
-        }
-        rows.push(row);
-      }
+  if (mode === "profit") {
+    headers.push(
+      pad("Selling Price", 20),
+      pad("Profit", 15),
+      pad("Percent Gain", 15)
+    );
+  }
 
-      // Add grand totals
-      let grandRow = ["Grand Total", grandTotalQuantity.toFixed(6), `$${(grandTotalCost / grandTotalQuantity).toFixed(4)}`];
-      if (mode === "profit") {
-        grandRow.push(`$${(grandTotalRevenue / grandTotalQuantity).toFixed(4)}`, `$${grandProfit.toFixed(2)}`, `${grandPercentGain.toFixed(2)}%`);
-      }
-      rows.push([]);
-      rows.push(grandRow);
+  rows.push(headers.join("  "));
 
-      // Create Excel file content
-      let csvContent = rows.map(row => row.join(",")).join("\n");
-      const blob = new Blob([csvContent], { type: "text/csv" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "trades.xlsx";
-      link.click();
+  for (const [asset, data] of Object.entries(assets)) {
+    const avg = (data.cost / data.qty).toFixed(4);
+    const rev = (data.rev / data.qty).toFixed(4);
+    const profit = (data.rev - data.cost).toFixed(2);
+    const gain = ((data.rev - data.cost) / data.cost * 100).toFixed(2);
+
+    const row = [
+      pad(asset, 14),
+      pad(data.qty.toFixed(6), 12),
+      pad(`$${avg}`, 20)
+    ];
+
+    if (mode === "profit") {
+      row.push(
+        pad(`$${rev}`, 20),
+        pad(`$${profit}`, 15),
+        pad(`${gain}%`, 15)
+      );
     }
 
-    //document.getElementById("excel").addEventListener("click", exportToExcel);
+    rows.push(row.join("  "));
+  }
+
+  // Grand total
+  rows.push(""); // Empty line
+  const grandRow = [
+    pad("Grand Total", 14),
+    pad(grandQty.toFixed(6), 12),
+    pad(`$${(grandCost / grandQty).toFixed(4)}`, 20)
+  ];
+
+  if (mode === "profit") {
+    grandRow.push(
+      pad(`$${(grandRev / grandQty).toFixed(4)}`, 20),
+      pad(`$${prof.toFixed(2)}`, 15),
+      pad(`${pct.toFixed(2)}%`, 15)
+    );
+  }
+
+  rows.push(grandRow.join("  "));
+
+  const text = rows.join("\n");
+  const blob = new Blob([text], { type: "text/plain" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "trades.txt";
+  link.click();
+}
 
 
-    function exportData() {
-      const { assets, grandTotalQuantity, grandTotalCost, grandTotalRevenue, grandProfit, grandPercentGain } = calculate();
-
-      const colWidths = {
-        asset: 15,
-        quantity: 12,
-        costPerAsset: 20,
-        sellPrice: 20,
-        profit: 15,
-        percentGain: 15
-      };
-
-      const pad = (value, width) => value.toString().padEnd(width, " ");
-
-      let text = pad("Asset Name", colWidths.asset) +
-                 pad("Quantity", colWidths.quantity) +
-                 pad("Cost Per Asset", colWidths.costPerAsset);
-
-      if (mode === "profit") {
-        text += pad("Selling Price", colWidths.sellPrice) +
-                pad("Profit", colWidths.profit) +
-                pad("Percent Gain", colWidths.percentGain);
-      }
-
-      text += "\n";
-
-      for (const [asset, data] of Object.entries(assets)) {
-        const averagePrice = data.totalCost / data.quantity || 0;
-        const profit = data.totalRevenue - data.totalCost || 0;
-        const percentGain = (profit / data.totalCost) * 100 || 0;
-
-        text += pad(asset, colWidths.asset) +
-                pad(data.quantity.toFixed(6), colWidths.quantity) +
-                pad(`$${(data.totalCost / data.quantity).toFixed(4)}`, colWidths.costPerAsset);
-
-        if (mode === "profit") {
-          text += pad(`$${(data.totalRevenue / data.quantity).toFixed(4)}`, colWidths.sellPrice) +
-                  pad(`$${profit.toFixed(2)}`, colWidths.profit) +
-                  pad(`${percentGain.toFixed(2)}%`, colWidths.percentGain);
-        }
-
-        text += "\n";
-      }
-
-      text += `\n${pad("Grand Total", colWidths.asset)}`;
-      text += pad(grandTotalQuantity.toFixed(6), colWidths.quantity);
-      text += pad(`$${(grandTotalCost / grandTotalQuantity).toFixed(4)}`, colWidths.costPerAsset);
-
-      if (mode === "profit") {
-        text += pad(`$${(grandTotalRevenue / grandTotalQuantity).toFixed(4)}`, colWidths.sellPrice) +
-                pad(`$${grandProfit.toFixed(2)}`, colWidths.profit) +
-                pad(`${grandPercentGain.toFixed(2)}%`, colWidths.percentGain);
-      }
-
-      const blob = new Blob([text], { type: "text/plain" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = "trades.txt";
-      link.click();
-    }
-
-
-
-    document.getElementById("trade-list").addEventListener("input", calculate);
+    document.getElementById('trade-list').addEventListener('input', calculate);
   </script>
 </body>
 </html>
