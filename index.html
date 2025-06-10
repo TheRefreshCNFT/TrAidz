@@ -341,16 +341,18 @@
       for (let [a,{qty,cost,rev}] of Object.entries(assets)) {
         const avg=cost/qty||0, prof=rev-cost, pct=prof/cost*100||0;
         const val = mode==='profit'?rev:cost;
-        out.innerHTML += `
-          <div><strong>${a}</strong></div>
-          <div>Value: $${val.toFixed(2)}</div>
-          <div>Average Price: $${avg.toFixed(4)}</div>
-          <div>Total Cost: $${cost.toFixed(2)}</div>
-          ${ mode==='profit'
-             ? `<div>Profit: $${prof.toFixed(2)}</div><div>Percent Gain: ${pct.toFixed(2)}%</div>`
-             : ''
-          }
-        `;
+  out.innerHTML += `
+  <div><strong>${a}</strong></div>
+  <div>Quantity: ${qty.toFixed(6)}</div>
+  <div>Value: $${val.toFixed(2)}</div>
+  <div>Average Price: $${avg.toFixed(4)}</div>
+  <div>Total Cost: $${cost.toFixed(2)}</div>
+  ${ mode==='profit'
+     ? `<div>Profit: $${prof.toFixed(2)}</div><div>Percent Gain: ${pct.toFixed(2)}%</div>`
+     : ''
+  }
+`;
+
       }
 
       const gp=grandRev-grandCost, gpct=gp/grandCost*100||0;
@@ -437,6 +439,53 @@ function exportData() {
   link.click();
 }
 
+function exportToExcel() {
+  const { assets, grandQty, grandCost, grandRev, prof, pct } = calculate();
+  const rows = [];
+
+  const headers = ["Asset Name", "Quantity", "Cost Per Asset"];
+  if (mode === "profit") {
+    headers.push("Selling Price", "Profit", "Percent Gain");
+  }
+  rows.push(headers);
+
+  for (const [asset, data] of Object.entries(assets)) {
+    const avg = (data.cost / data.qty).toFixed(4);
+    const rev = (data.rev / data.qty).toFixed(4);
+    const profit = (data.rev - data.cost).toFixed(2);
+    const gain = ((data.rev - data.cost) / data.cost * 100).toFixed(2);
+
+    const row = [asset, data.qty.toFixed(6), `$${avg}`];
+    if (mode === "profit") {
+      row.push(`$${rev}`, `$${profit}`, `${gain}%`);
+    }
+    rows.push(row);
+  }
+
+  rows.push([]); // empty line before total
+  const grandRow = [
+    "Grand Total",
+    grandQty.toFixed(6),
+    `$${(grandCost / grandQty).toFixed(4)}`
+  ];
+
+  if (mode === "profit") {
+    grandRow.push(
+      `$${(grandRev / grandQty).toFixed(4)}`,
+      `$${prof.toFixed(2)}`,
+      `${pct.toFixed(2)}%`
+    );
+  }
+
+  rows.push(grandRow);
+
+  const csv = rows.map(r => r.join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = "trades.csv";
+  link.click();
+}
 
     document.getElementById('trade-list').addEventListener('input', calculate);
   </script>
