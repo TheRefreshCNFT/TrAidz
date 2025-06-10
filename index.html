@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trade Calculator</title>
+  <style>
+  :root {
+    --primary: #007BFF;
+    --primary-dark: #0056b3;
+    --success: #28a745;
+    --success-dark: #218838;
+    --bg-light: #f8f9fa;
+    --text-light: #fff;
+    --border-radius: 6px;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #f5f7fa;
+    color: #333;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    background: #111;
+    color: var(--text-light);
+    padding: 12px 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  }
+
+  header img {
+    height: 32px;
+    margin-right: 12px;
+  }
+
+  header h1 {
+    font-size: 20px;
+    margin: 0;
+  }
+
+  main {
+    padding: 20px;
+    max-width: 900px;
+    margin: auto;
+  }
+
+  .switch {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+
+  .switch label {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    gap: 8px;
+  }
+
+  .trade-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+
+  .trade-row input {
+    flex: 1 1 150px;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: var(--border-radius);
+    transition: border-color 0.2s ease-in-out;
+  }
+
+  .trade-row input:focus {
+    border-color: var(--primary);
+    outline: none;
+  }
+
+  .trade-row button {
+    padding: 10px 14px;
+    background: var(--primary);
+    color: var(--text-light);
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+  }
+
+  .trade-row button:hover {
+    background: var(--primary-dark);
+  }
+
+  button {
+    font-family: inherit;
+  }
+
+  .results {
+    margin-top: 25px;
+    background: var(--bg-light);
+    padding: 15px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+
+  .results div {
+    margin-bottom: 8px;
+  }
+
+  .export-button {
+    margin-top: 20px;
+    padding: 10px 16px;
+    font-size: 14px;
+    background: var(--success);
+    color: var(--text-light);
+    border: none;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    transition: background 0.2s ease-in-out;
+  }
+
+  .export-button:hover {
+    background: var(--success-dark);
+  }
+
+  @media (max-width: 600px) {
+    .trade-row input, .trade-row button {
+      flex: 1 1 100%;
+    }
+
+    header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    header h1 {
+      margin-top: 10px;
+    }
+  }
+</style>
+
+</head>
+<body>
+  <header>
+    <img src="logo.png" alt="Logo">
+    <h1>Trade Calculator</h1>
+  </header>
+  <main>
+    <div class="switch">
+      <label>
+        <input type="radio" name="mode" value="average" checked> Average Cost
+      </label>
+      <label>
+        <input type="radio" name="mode" value="profit"> Profit
+      </label>
+    </div>
+    <div id="trade-list">
+      <div class="trade-row">
+        <input type="text" placeholder="Asset Name">
+        <input type="number" placeholder="Quantity" step="any">
+        <input type="number" placeholder="Cost Per Asset ($)" step="any">
+        <button onclick="removeRow(this)">Remove</button>
+      </div>
+    </div>
+    <button onclick="addRow()">Add Trade</button>
+    <div class="results">
+      <div id="average-price">Average Price: $0.00</div>
+      <div id="total-cost">Total Cost: $0.00</div>
+      <div id="profit" style="display: none;">Profit: $0.00</div>
+      <div id="percent-gain" style="display: none;">Percent Gain: 0.00%</div>
+    </div>
+    <button class="export-button" onclick="exportData()">Export to Text</button>
+    <button id="excel" class="export-button" onclick="exportToExcel()">Export to Excel</button>
+
+  </main>
+  <script>
+    let mode = "average";
+
+    document.querySelectorAll('input[name="mode"]').forEach(input => {
+      input.addEventListener("change", () => {
+        mode = input.value;
+        updateFields();
+        calculate();
+      });
+    });
+
+    function addRow() {
+      const tradeList = document.getElementById("trade-list");
+      const row = document.createElement("div");
+      row.className = "trade-row";
+      row.innerHTML = `
+        <input type="text" placeholder="Asset Name">
+        <input type="number" placeholder="Quantity" step="any">
+        <input type="number" placeholder="Cost Per Asset ($)" step="any">
+        ${mode === "profit" ? '<input type="number" placeholder="Selling Price ($)" step="any">' : ''}
+        <button onclick="removeRow(this)">Remove</button>
+      `;
+      tradeList.appendChild(row);
+    }
+
+    function removeRow(button) {
+      button.parentElement.remove();
+      calculate();
+    }
+
+    function updateFields() {
+      const rows = document.querySelectorAll(".trade-row");
+      rows.forEach(row => {
+        const sellPriceField = row.querySelector('input[placeholder="Selling Price ($)"]');
+        if (mode === "profit" && !sellPriceField) {
+          const input = document.createElement("input");
+          input.type = "number";
+          input.placeholder = "Selling Price ($)";
+          input.step = "any";
+          row.insertBefore(input, row.lastElementChild);
+        } else if (mode === "average" && sellPriceField) {
+          sellPriceField.remove();
+        }
+      });
+    }
+
+    function calculate() {
+      const rows = document.querySelectorAll(".trade-row");
+      const assets = {};
+      let grandTotalQuantity = 0;
+      let grandTotalCost = 0;
+      let grandTotalRevenue = 0;
+
+      let lastAsset = "";
+      const sellPrices = {}; // Store the last sell price for each asset
+
+      rows.forEach((row, index) => {
+        let asset = row.children[0].value.trim();
+        const quantity = parseFloat(row.children[1].value) || 0;
+        const costPerAsset = parseFloat(row.children[2].value) || 0;
+        let sellPrice = mode === "profit" ? parseFloat(row.children[3]?.value || 0) : 0;
+
+        // Use the last asset if none is entered
+        if (!asset && lastAsset) {
+          asset = lastAsset;
+          row.children[0].placeholder = asset; // Display shadow value
+        } else if (asset) {
+          lastAsset = asset; // Update last asset
+        }
+
+        // Apply the smart sell price logic
+        if (mode === "profit") {
+          if (sellPrice) {
+            sellPrices[asset] = sellPrice; // Update the chain for this asset
+          } else if (sellPrices[asset]) {
+            sellPrice = sellPrices[asset]; // Use the last known sell price for this asset
+          }
+        }
+
+        // Initialize asset group if not already
+        if (!assets[asset]) {
+          assets[asset] = { quantity: 0, totalCost: 0, totalRevenue: 0 };
+        }
+
+        // Update asset group totals
+        assets[asset].quantity += quantity;
+        assets[asset].totalCost += quantity * costPerAsset;
+        if (mode === "profit") {
+          assets[asset].totalRevenue += quantity * sellPrice;
+        }
+
+        // Update grand totals
+        grandTotalQuantity += quantity;
+        grandTotalCost += quantity * costPerAsset;
+        if (mode === "profit") {
+          grandTotalRevenue += quantity * sellPrice;
+        }
+      });
+
+      const resultsDiv = document.querySelector(".results");
+      resultsDiv.innerHTML = ""; // Clear previous results
+
+      // Display results for each asset
+      for (const [asset, data] of Object.entries(assets)) {
+        const averagePrice = data.totalCost / data.quantity || 0;
+        const profit = data.totalRevenue - data.totalCost || 0;
+        const percentGain = (profit / data.totalCost) * 100 || 0;
+
+        resultsDiv.innerHTML += `
+          <div><strong>${asset}</strong></div>
+          <div>Average Price: $${averagePrice.toFixed(4)}</div>
+          <div>Total Cost: $${data.totalCost.toFixed(2)}</div>
+          ${mode === "profit" ? `
+            <div>Profit: $${profit.toFixed(2)}</div>
+            <div>Percent Gain: ${percentGain.toFixed(2)}%</div>
+          ` : ""}
+        `;
+      }
+
+      // Display grand totals
+      const grandAveragePrice = grandTotalCost / grandTotalQuantity || 0;
+      const grandProfit = grandTotalRevenue - grandTotalCost || 0;
+      const grandPercentGain = (grandProfit / grandTotalCost) * 100 || 0;
+
+      resultsDiv.innerHTML += `
+        <div><strong>Grand Total</strong></div>
+        <div>Average Price: $${grandAveragePrice.toFixed(4)}</div>
+        <div>Total Cost: $${grandTotalCost.toFixed(2)}</div>
+        ${mode === "profit" ? `
+          <div>Profit: $${grandProfit.toFixed(2)}</div>
+          <div>Percent Gain: ${grandPercentGain.toFixed(2)}%</div>
+        ` : ""}
+      `;
+
+      return { assets, grandTotalQuantity, grandTotalCost, grandTotalRevenue, grandProfit, grandPercentGain };
+    }
+
+    function exportToExcel() {
+      const { assets, grandTotalQuantity, grandTotalCost, grandTotalRevenue, grandProfit, grandPercentGain } = calculate();
+
+      let rows = [["Asset Name", "Quantity", "Cost Per Asset"]]; // Header row
+      if (mode === "profit") {
+        rows[0].push("Selling Price", "Profit", "Percent Gain");
+      }
+
+      // Add rows for each asset
+      for (const [asset, data] of Object.entries(assets)) {
+        const averagePrice = data.totalCost / data.quantity || 0;
+        const profit = data.totalRevenue - data.totalCost || 0;
+        const percentGain = (profit / data.totalCost) * 100 || 0;
+
+        let row = [asset, data.quantity.toFixed(6), `$${(data.totalCost / data.quantity).toFixed(4)}`];
+        if (mode === "profit") {
+          row.push(`$${(data.totalRevenue / data.quantity).toFixed(4)}`, `$${profit.toFixed(2)}`, `${percentGain.toFixed(2)}%`);
+        }
+        rows.push(row);
+      }
+
+      // Add grand totals
+      let grandRow = ["Grand Total", grandTotalQuantity.toFixed(6), `$${(grandTotalCost / grandTotalQuantity).toFixed(4)}`];
+      if (mode === "profit") {
+        grandRow.push(`$${(grandTotalRevenue / grandTotalQuantity).toFixed(4)}`, `$${grandProfit.toFixed(2)}`, `${grandPercentGain.toFixed(2)}%`);
+      }
+      rows.push([]);
+      rows.push(grandRow);
+
+      // Create Excel file content
+      let csvContent = rows.map(row => row.join(",")).join("\n");
+      const blob = new Blob([csvContent], { type: "text/csv" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "trades.xlsx";
+      link.click();
+    }
+
+    //document.getElementById("excel").addEventListener("click", exportToExcel);
+
+
+    function exportData() {
+      const { assets, grandTotalQuantity, grandTotalCost, grandTotalRevenue, grandProfit, grandPercentGain } = calculate();
+
+      const colWidths = {
+        asset: 15,
+        quantity: 12,
+        costPerAsset: 20,
+        sellPrice: 20,
+        profit: 15,
+        percentGain: 15
+      };
+
+      const pad = (value, width) => value.toString().padEnd(width, " ");
+
+      let text = pad("Asset Name", colWidths.asset) +
+                 pad("Quantity", colWidths.quantity) +
+                 pad("Cost Per Asset", colWidths.costPerAsset);
+
+      if (mode === "profit") {
+        text += pad("Selling Price", colWidths.sellPrice) +
+                pad("Profit", colWidths.profit) +
+                pad("Percent Gain", colWidths.percentGain);
+      }
+
+      text += "\n";
+
+      for (const [asset, data] of Object.entries(assets)) {
+        const averagePrice = data.totalCost / data.quantity || 0;
+        const profit = data.totalRevenue - data.totalCost || 0;
+        const percentGain = (profit / data.totalCost) * 100 || 0;
+
+        text += pad(asset, colWidths.asset) +
+                pad(data.quantity.toFixed(6), colWidths.quantity) +
+                pad(`$${(data.totalCost / data.quantity).toFixed(4)}`, colWidths.costPerAsset);
+
+        if (mode === "profit") {
+          text += pad(`$${(data.totalRevenue / data.quantity).toFixed(4)}`, colWidths.sellPrice) +
+                  pad(`$${profit.toFixed(2)}`, colWidths.profit) +
+                  pad(`${percentGain.toFixed(2)}%`, colWidths.percentGain);
+        }
+
+        text += "\n";
+      }
+
+      text += `\n${pad("Grand Total", colWidths.asset)}`;
+      text += pad(grandTotalQuantity.toFixed(6), colWidths.quantity);
+      text += pad(`$${(grandTotalCost / grandTotalQuantity).toFixed(4)}`, colWidths.costPerAsset);
+
+      if (mode === "profit") {
+        text += pad(`$${(grandTotalRevenue / grandTotalQuantity).toFixed(4)}`, colWidths.sellPrice) +
+                pad(`$${grandProfit.toFixed(2)}`, colWidths.profit) +
+                pad(`${grandPercentGain.toFixed(2)}%`, colWidths.percentGain);
+      }
+
+      const blob = new Blob([text], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "trades.txt";
+      link.click();
+    }
+
+
+
+    document.getElementById("trade-list").addEventListener("input", calculate);
+  </script>
+</body>
+</html>
