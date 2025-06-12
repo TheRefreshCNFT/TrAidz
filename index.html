@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TrAidz</title>
   <style>
     :root {
@@ -31,45 +31,49 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Roboto, sans-serif;
-      font-size: 16px;
       line-height: 1.5;
       background: var(--bg);
       color: var(--fg);
       transition: background var(--transition), color var(--transition);
     }
+
+    /* —— HEADER —— */
     header {
       display: flex;
-      align-items: center;
-      flex-wrap: wrap;
+      align-items: flex-start;        /* align tops */
+      justify-content: space-between; /* logo left, toggle right */
+      padding: 4px 20px;
       background: var(--primary);
       color: #fff;
-      padding: 12px 20px;
       box-shadow: var(--shadow);
     }
-    header img {
-      height: 32px;
-      margin-right: 12px;
+    header .logo {
+      width: 50px;
+      height: 35px;
     }
-    header h1 {
-      font-size: 20px;
+    header #pTxt {
       margin: 0;
-      flex: 1;
+      margin-left: 0px;              
+      font-family: 'Trebuchet MS', Verdana, sans-serif;
+      font-size: 36px;               
+      font-weight: 900;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
     }
     .theme-toggle {
       font-size: 16px;
-      padding: 6px 10px;
       background: var(--input-bg);
       color: var(--primary);
       border: none;
       border-radius: var(--border-radius);
       cursor: pointer;
       transition: background var(--transition);
-      width: auto;
+      width: 35px;
+      height: 35px;
     }
     .theme-toggle:hover {
       opacity: 0.85;
     }
+
     main {
       padding: 20px;
       max-width: 900px;
@@ -85,12 +89,11 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 16px;
+      font-size: 26px;
       font-weight: 500;
     }
-    #import {
-      font-size: 16px;
-    }
+    #import { font-size: 16px; }
+
     .trade-row {
       display: flex;
       gap: 10px;
@@ -102,9 +105,7 @@
       box-shadow: var(--shadow);
     }
     .trade-row input,
-    .trade-row button {
-      font-size: 16px;
-    }
+    .trade-row button { font-size: 16px; }
     .trade-row input {
       flex: 1 1 150px;
       padding: 10px;
@@ -130,9 +131,7 @@
     .trade-row button:hover {
       background: var(--primary-dark);
     }
-    button {
-      font-family: inherit;
-    }
+    button { font-family: inherit; }
     .export-button {
       margin-top: 20px;
       padding: 10px 16px;
@@ -143,11 +142,12 @@
       border-radius: var(--border-radius);
       cursor: pointer;
       transition: background var(--transition);
-      width: auto;
     }
     .export-button:hover {
       background: var(--success-dark);
     }
+
+    /* —— CARD STYLING —— */
     .results {
       margin-top: 25px;
     }
@@ -156,18 +156,45 @@
       color: var(--input-fg);
       border-radius: var(--border-radius);
       box-shadow: var(--shadow);
-      padding: 15px 20px;
+      border-left: 4px solid var(--primary);
+      padding: 20px;
       margin-bottom: 20px;
-      transition: all var(--transition);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .result-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
     }
     .result-card h3 {
-      margin-top: 0;
-      font-size: 18px;
-      color: var(--primary);
+      font-size: 24px;
+      margin: 0 0 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--primary-dark);
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 4px;
     }
     .result-card p {
-      margin: 4px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 6px 0;
+      gap: 8px;
     }
+    .result-card p span:first-child {
+      font-weight: 700;
+      background-color: var(--primary);
+      color: #fff;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    .result-card p span:last-child {
+      flex: 1;
+      text-align: right;
+      font-weight: 400;
+      color: var(--fg);
+    }
+
     .result-grand {
       background: var(--primary);
       color: white;
@@ -179,37 +206,40 @@
     .result-grand h3 {
       margin: 0 0 8px 0;
     }
-    @media (max-width: 600px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      header h1 {
-        margin-top: 10px;
-        font-size:42px;
-      }
-      .switch label,
-      .export-button,
-      .theme-toggle,
-      .trade-row input,
-      .trade-row button {
-        width: 100%;
-      }
-    }
   </style>
 </head>
 <body>
   <header>
-    <img src="logo.png" alt="Logo" />
-    <h1>TrAidz</h1>
-    <button id="theme-toggle" class="theme-toggle">Dark Mode</button>
+    <div class="logo" style="width:50px; height:35px;">
+      <svg viewBox="0 0 100 64" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+        <defs>
+          <marker id="arrowhead-left" markerUnits="userSpaceOnUse" markerWidth="24" markerHeight="24" refX="24" refY="12" orient="auto">
+            <polygon points="24,12 0,0 0,24" fill="white"/>
+          </marker>
+          <marker id="arrowhead-right" markerUnits="userSpaceOnUse" markerWidth="24" markerHeight="24" refX="24" refY="12" orient="auto">
+            <polygon points="24,12 0,0 0,24" fill="white"/>
+          </marker>
+        </defs>
+        <line x1="70" y1="12" x2="0" y2="12" stroke="white" stroke-width="4" stroke-linecap="butt" marker-end="url(#arrowhead-left)"/>
+        <line x1="30" y1="52" x2="100" y2="52" stroke="white" stroke-width="4" stroke-linecap="butt" marker-end="url(#arrowhead-right)"/>
+        <text x="50" y="32" font-size="40" font-family="Arial" fill="white" text-anchor="middle" dominant-baseline="central">$</text>
+      </svg>
+    </div>
+
+    <h1 id="pTxt">TrAidz</h1>
+
+    <div class="theme-toggle-container">
+      <button id="theme-toggle" class="theme-toggle" title="Toggle Theme">🌞</button>
+    </div>
   </header>
+
   <main>
     <div class="switch">
       <label><input type="radio" name="mode" value="average" checked> Average Cost</label>
       <label><input type="radio" name="mode" value="profit"> Profit</label>
       <input type="file" id="import" accept=".txt,.csv">
     </div>
+
     <div id="trade-list">
       <div class="trade-row">
         <input type="text" placeholder="Asset Name">
@@ -218,12 +248,16 @@
         <button onclick="removeRow(this)">Remove</button>
       </div>
     </div>
+
     <button onclick="addRow()" style="margin-top:12px;font-size:16px;">Add Trade</button>
-    <div class="results"></div>
+
+    <div class="results">
+      <!-- JS-generated .result-card items go here -->
+    </div>
+
     <button class="export-button" onclick="exportData()">Export to Text</button>
     <button class="export-button" onclick="exportToExcel()">Export to Excel</button>
   </main>
-
 
   <script>
     let mode = "average";
@@ -232,14 +266,13 @@
     const themeToggle = document.getElementById('theme-toggle');
     const saved = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', saved);
-    themeToggle.textContent = saved === 'light' ? 'Dark Mode' : 'Light Mode';
-
-    themeToggle.onclick = () => {
-      const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
-      document.documentElement.setAttribute('data-theme', t);
-      localStorage.setItem('theme', t);
-      themeToggle.textContent = t === 'dark' ? 'Light Mode' : 'Dark Mode';
-    };
+    themeToggle.textContent = saved === 'light' ? '🌞' : '🌜';
+themeToggle.onclick = () => {
+  const t = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('theme', t);
+  themeToggle.textContent = t === 'dark' ? '🌜' : '🌞';
+};
 
     // Import handling
     document.getElementById('import').addEventListener('change', e => {
